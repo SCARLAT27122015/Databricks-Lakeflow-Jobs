@@ -1,0 +1,38 @@
+{
+  "name": "JobLoops-20250912",
+  "email_notifications": {
+    "no_alert_for_skipped_runs": false
+  },
+  "webhook_notifications": {},
+  "timeout_seconds": 0,
+  "max_concurrent_runs": 1,
+  "tasks": [
+    {
+      "task_key": "Loop_Task",
+      "run_if": "ALL_SUCCESS",
+      "for_each_task": {
+        "inputs": "[1,2,3,4,5]",
+        "task": {
+          "task_key": "Loop_Task_iteration",
+          "run_if": "ALL_SUCCESS",
+          "notebook_task": {
+            "notebook_path": "/Workspace/Users/israelawstest20220727@gmail.com/Databricks lakeflow/Notebook-A",
+            "source": "WORKSPACE"
+          },
+          "timeout_seconds": 0,
+          "email_notifications": {},
+          "webhook_notifications": {}
+        }
+      },
+      "timeout_seconds": 0,
+      "email_notifications": {}
+    }
+  ],
+  "queue": {
+    "enabled": true
+  },
+  "performance_target": "PERFORMANCE_OPTIMIZED",
+  "run_as": {
+    "user_name": "israelawstest20220727@gmail.com"
+  }
+}
