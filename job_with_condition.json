@@ -1,36 +1,79 @@
-resources:
-  jobs:
-    Job2_20250912:
-      name: Job2-20250912
-      tasks:
-        - task_key: Task_A
-          notebook_task:
-            notebook_path: /Workspace/Users/israelawstest20220727@gmail.com/Databricks
-              lakeflow/Notebook-A
-            source: WORKSPACE
-        - task_key: ifFriday
-          depends_on:
-            - task_key: Task_A
-          condition_task:
-            op: EQUAL_TO
-            left: "{{job.start_time.iso_weekday}}"
-            right: "6"
-        - task_key: Task-B
-          depends_on:
-            - task_key: ifFriday
-              outcome: "true"
-          notebook_task:
-            notebook_path: /Workspace/Users/israelawstest20220727@gmail.com/Databricks
-              lakeflow/Notebook-B
-            source: WORKSPACE
-        - task_key: Task_c
-          depends_on:
-            - task_key: ifFriday
-              outcome: "false"
-          notebook_task:
-            notebook_path: /Workspace/Users/israelawstest20220727@gmail.com/Databricks
-              lakeflow/Notebook-C
-            source: WORKSPACE
-      queue:
-        enabled: true
-      performance_target: PERFORMANCE_OPTIMIZED
+{
+  "name": "Job2-20250912",
+  "email_notifications": {
+    "no_alert_for_skipped_runs": false
+  },
+  "webhook_notifications": {},
+  "timeout_seconds": 0,
+  "max_concurrent_runs": 1,
+  "tasks": [
+    {
+      "task_key": "Task_A",
+      "run_if": "ALL_SUCCESS",
+      "notebook_task": {
+        "notebook_path": "/Workspace/Users/israelawstest20220727@gmail.com/Databricks lakeflow/Notebook-A",
+        "source": "WORKSPACE"
+      },
+      "timeout_seconds": 0,
+      "email_notifications": {},
+      "webhook_notifications": {}
+    },
+    {
+      "task_key": "ifFriday",
+      "depends_on": [
+        {
+          "task_key": "Task_A"
+        }
+      ],
+      "run_if": "ALL_SUCCESS",
+      "condition_task": {
+        "op": "EQUAL_TO",
+        "left": "{{job.start_time.iso_weekday}}",
+        "right": "6"
+      },
+      "timeout_seconds": 0,
+      "email_notifications": {},
+      "webhook_notifications": {}
+    },
+    {
+      "task_key": "Task-B",
+      "depends_on": [
+        {
+          "task_key": "ifFriday",
+          "outcome": "true"
+        }
+      ],
+      "run_if": "ALL_SUCCESS",
+      "notebook_task": {
+        "notebook_path": "/Workspace/Users/israelawstest20220727@gmail.com/Databricks lakeflow/Notebook-B",
+        "source": "WORKSPACE"
+      },
+      "timeout_seconds": 0,
+      "email_notifications": {},
+      "webhook_notifications": {}
+    },
+    {
+      "task_key": "Task_c",
+      "depends_on": [
+        {
+          "task_key": "ifFriday",
+          "outcome": "false"
+        }
+      ],
+      "run_if": "ALL_SUCCESS",
+      "notebook_task": {
+        "notebook_path": "/Workspace/Users/israelawstest20220727@gmail.com/Databricks lakeflow/Notebook-C",
+        "source": "WORKSPACE"
+      },
+      "timeout_seconds": 0,
+      "email_notifications": {}
+    }
+  ],
+  "queue": {
+    "enabled": true
+  },
+  "performance_target": "PERFORMANCE_OPTIMIZED",
+  "run_as": {
+    "user_name": "israelawstest20220727@gmail.com"
+  }
+}
