@@ -1,0 +1,60 @@
+{
+  "name": "Advanced_job20250914",
+  "email_notifications": {
+    "no_alert_for_skipped_runs": false
+  },
+  "webhook_notifications": {},
+  "timeout_seconds": 0,
+  "max_concurrent_runs": 1,
+  "tasks": [
+    {
+      "task_key": "SQL_Array",
+      "run_if": "ALL_SUCCESS",
+      "sql_task": {
+        "query": {
+          "query_id": "cea40771-600c-4d85-bda8-0ba8dad9930e"
+        },
+        "warehouse_id": "832a428346bcb505"
+      },
+      "timeout_seconds": 0,
+      "email_notifications": {},
+      "webhook_notifications": {}
+    },
+    {
+      "task_key": "dynamic_ingestion",
+      "depends_on": [
+        {
+          "task_key": "SQL_Array"
+        }
+      ],
+      "run_if": "ALL_SUCCESS",
+      "for_each_task": {
+        "inputs": "{{tasks.SQL_Array.output.rows}}",
+        "task": {
+          "task_key": "dynamic_ingestion_iteration",
+          "run_if": "ALL_SUCCESS",
+          "notebook_task": {
+            "notebook_path": "/Workspace/Users/israelawstest20220727@gmail.com/Databricks lakeflow/Advanced/02-Advanced-Ingestion",
+            "base_parameters": {
+              "file_name": "{{input.file_name}}"
+            },
+            "source": "WORKSPACE"
+          },
+          "timeout_seconds": 0,
+          "email_notifications": {},
+          "webhook_notifications": {}
+        }
+      },
+      "timeout_seconds": 0,
+      "email_notifications": {},
+      "webhook_notifications": {}
+    }
+  ],
+  "queue": {
+    "enabled": true
+  },
+  "performance_target": "PERFORMANCE_OPTIMIZED",
+  "run_as": {
+    "user_name": "israelawstest20220727@gmail.com"
+  }
+}
